@@ -127,6 +127,22 @@
         opacity: 0.9;
         transform: translateY(-3px);
       }
+      #logout-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background-color: transparent;
+        border: 2px solid white;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      #logout-btn:hover {
+        background-color: white;
+        color: var(--primary-color);
+      }
       @media (max-width: 768px) {
         .action-grid {
           grid-template-columns: 1fr;
@@ -141,36 +157,81 @@
         RPA Configuration Dashboard
       </h1>
       <p>Streamline your Robotic Process Automation management</p>
+      <button id="logout-btn">Logout</button>
     </header>
 
     <section class="action-section">
-      <div class="action-grid">
-        <div class="action-card">
-          <i class="fas fa-key"></i>
-          <h3>Update Credentials</h3>
-          <p>Securely manage and update your RPA system credentials</p>
-          <a href="update_credentials.html" class="action-btn btn-update">
-            Update Now
-          </a>
-        </div>
-
-        <div class="action-card">
-          <i class="fas fa-plus-circle"></i>
-          <h3>Add New Agency</h3>
-          <p>Expand your RPA ecosystem by adding a new agency configuration</p>
-          <a href="add_agency.html" class="action-btn btn-add"> Add Agency </a>
-        </div>
-
-        <!-- <div class="action-card">
-          <i class="fas fa-user-shield"></i>
-          <h3>Access Portal</h3>
-          <p>Secure login and user management for RPA administrators</p>
-          <a href="login.html" class="action-btn btn-login">
-            Login / Sign Up
-          </a>
-        </div> -->
+      <div class="action-grid" id="action-grid">
+        <!-- Action cards will be dynamically added here -->
       </div>
     </section>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const userRole = sessionStorage.getItem("userRole");
+        const actionGrid = document.getElementById("action-grid");
+
+        if (!userRole) {
+          window.location.href = "index.html";
+          return;
+        }
+
+        const actions = [
+          {
+            icon: "fas fa-key",
+            title: "Update Credentials",
+            description:
+              "Securely manage and update your RPA system credentials",
+            link: "update_credentials.html",
+            btnClass: "btn-update",
+            btnText: "Update Now",
+            role: "superadmin",
+          },
+          {
+            icon: "fas fa-plus-circle",
+            title: "Add New Agency",
+            description:
+              "Expand your RPA ecosystem by adding a new agency configuration",
+            link: "add_agency.html",
+            btnClass: "btn-add",
+            btnText: "Add Agency",
+            role: "superadmin",
+          },
+          {
+            icon: "fas fa-file-alt",
+            title: "Order Details",
+            description: "View order information securely without making changes to the data",
+            link: "order_details.html",
+            btnClass: "btn-update",
+            btnText: "View Details",
+            role: "both",
+          },
+        ];
+
+        actions.forEach((action) => {
+          if (userRole === "superadmin" || action.role === "both") {
+            const card = document.createElement("div");
+            card.className = "action-card";
+            card.innerHTML = `
+              <i class="${action.icon}"></i>
+              <h3>${action.title}</h3>
+              <p>${action.description}</p>
+              <a href="${action.link}" class="action-btn ${action.btnClass}">
+                ${action.btnText}
+              </a>
+            `;
+            actionGrid.appendChild(card);
+          }
+        });
+
+        document
+          .getElementById("logout-btn")
+          .addEventListener("click", function () {
+            sessionStorage.removeItem("userRole");
+            window.location.href = "index.html";
+          });
+      });
+    </script>
 
     <!-- Bootstrap Bundle with Popper -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap -->

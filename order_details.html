@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #6366f1;
+            --bg-color: #f3f4f6;
+            --text-color: #1f2937;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        .dashboard-header p {
+            margin-top: 10px;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        .card {
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 30px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .form-control, .btn {
+            border-radius: 8px;
+        }
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .form-label {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        #resultContainer {
+            margin-top: 2rem;
+            text-align: left;
+        }
+        #logout-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #logout-btn:hover {
+            background-color: white;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <header class="dashboard-header">
+        <h1>
+            <i class="fas fa-file-alt"></i>
+            Order Details
+        </h1>
+        <p>View details for specific orders or DA IDs</p>
+        <button id="logout-btn">Logout</button>
+    </header>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <form id="orderDetailsForm">
+                        <div class="mb-3">
+                            <label for="idType" class="form-label">Select ID Type</label>
+                            <select id="idType" class="form-select" required>
+                                <option value="orderId">Order ID</option>
+                                <option value="daId">DA ID</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="idValue" class="form-label">Enter ID</label>
+                            <input type="text" id="idValue" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Get Details</button>
+                    </form>
+                    <div id="resultContainer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/script_order_details.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userRole = sessionStorage.getItem('userRole');
+            if (!userRole) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                sessionStorage.removeItem('userRole');
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>
+
